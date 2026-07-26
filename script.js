@@ -1,68 +1,57 @@
 
+// ===== The Kashmiri Sketcher =====
 
-// Smooth animation when page loads
+// Fade in when page loads
 window.addEventListener("load", () => {
     document.body.style.opacity = "1";
 });
 
-// Highlight menu while scrolling
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll("nav ul li a");
+// Gallery image click (lightbox)
+const galleryImages = document.querySelectorAll(".gallery img");
 
-window.addEventListener("scroll", () => {
-    let current = "";
+galleryImages.forEach((img) => {
 
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 120;
-        if (pageYOffset >= sectionTop) {
-            current = section.getAttribute("id");
-        }
+    img.addEventListener("click", () => {
+
+        const overlay = document.createElement("div");
+        overlay.className = "lightbox";
+
+        overlay.innerHTML = `
+            <span class="close">&times;</span>
+            <img src="${img.src}">
+        `;
+
+        document.body.appendChild(overlay);
+
+        overlay.onclick = () => {
+            overlay.remove();
+        };
+
     });
 
-    navLinks.forEach(link => {
-        link.classList.remove("active");
-        if (link.getAttribute("href") === "#" + current) {
-            link.classList.add("active");
-        }
-    });
 });
 
-// Welcome message
-console.log("Welcome to The Kashmiri Sketcher!");
+// Scroll animation
+const observer = new IntersectionObserver((entries) => {
 
+    entries.forEach((entry) => {
 
+        if(entry.isIntersecting){
 
+            entry.target.classList.add("show");
 
+        }
 
+    });
 
+});
 
+document.querySelectorAll("section").forEach((section)=>{
 
+    section.classList.add("hidden");
 
+    observer.observe(section);
 
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+console.log("Welcome to The Kashmiri Sketcher");
